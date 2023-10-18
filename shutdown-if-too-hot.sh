@@ -20,6 +20,8 @@ elif [[ $(( $max_temp - 200 )) -le $$temp  ]] && ! pgrep -f color-cycle.py; then
         	if [[ $nowhour -ge 6 ]]; then
 			echo "No other process; starting new"
         	         sudo color-cycle.py --steps=150 --more --slow --time=15 -c &
+		else
+			sudo led-off.py --off
         	fi
 	)&
 else
