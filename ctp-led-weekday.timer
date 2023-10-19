@@ -9,8 +9,7 @@ Requires=ctp-led.service
 
 [Timer]
 Unit=ctp-led.service
-OnCalendar=Mon..Fri *-*-* 17..23:*:00
-OnCalendar=Sun,Sat *-*-* 06..23:*:00
+OnCalendar=Mon...Fri *-*-* 17-00:*:00
 Persistent=true
 
 [Install]

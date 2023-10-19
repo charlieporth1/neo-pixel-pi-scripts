@@ -6,10 +6,10 @@ max_temp=550
 if [[ $temp -ge $max_temp ]]; then
 	echo "Shutting down computer too hot"
 	sudo killall -9 python3
-	sudo led-off.py --off
+	sudo led-off.py --hot
 #	timeout 15 sudo poweroff
 #	timeout 20 sudo poweroff -f
-elif [[ $(( $max_temp - 200 )) -le $$temp  ]] && ! pgrep -f color-cycle.py; then
+elif [[ $(( $max_temp - 200 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
 	echo "No other process; starting new"
 	(
 #		sudo color-fade.py 
