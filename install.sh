@@ -1,6 +1,5 @@
 #!/bin/bash
 export PROG=/home/pi/Programs
-sudo -E rm -rf $PROG/
 sudo -E ln -s $HOME/neo-pixel-pi-scripts $PROG
 sudo -E cp -vrf ./ctp-led.{timer,service} /etc/systemd/system
 sudo -E systemctl daemon-reload
