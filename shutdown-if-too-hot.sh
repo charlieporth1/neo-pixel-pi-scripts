@@ -6,6 +6,7 @@ max_temp=550
 if [[ $temp -ge $max_temp ]]; then
 	echo "Shutting down computer too hot"
 	sudo killall -9 python3
+	pgrep -f led-off.py | xargs sudo kill -9
 	sudo led-off.py --hot
 #	timeout 15 sudo poweroff
 #	timeout 20 sudo poweroff -f
@@ -22,11 +23,13 @@ elif [[ $(( $max_temp - 200 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
         	         sudo color-cycle.py --steps=150 --more --slow --time=15 -c &
 		else
 			sudo killall -9 python3
+			pgrep -f led-off.py | xargs sudo kill -9
 			sudo led-off.py --off
         	fi
 	)&
 else
 	sudo killall -9 python3
+	pgrep -f led-off.py | xargs sudo kill -9
 	sudo led-off.py --off
 	echo "Not enought"
 fi
