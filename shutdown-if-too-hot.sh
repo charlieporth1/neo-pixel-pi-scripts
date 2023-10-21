@@ -3,6 +3,13 @@ cpu-temp.sh
 temp=`cpu-temp.sh | tr -dc '0-9'`
 other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
 max_temp=550
+arg=$1
+if [[ $arg = --off ]]; then
+	sudo killall -9 python3
+	pgrep -f led-off.py | xargs sudo kill -9
+	sudo led-off.py --off
+	exit 0
+fi
 if [[ $temp -ge $max_temp ]]; then
 	echo "Shutting down computer too hot"
 	sudo killall -9 python3
