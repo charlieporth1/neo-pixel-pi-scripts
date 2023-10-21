@@ -45,4 +45,4 @@ StandardError=file:/var/log/service.ctp-led.log
 
 [Install]
 WantedBy=default.target
-Alias=ctp-ledst.service
+Alias=ctp-leds.service
