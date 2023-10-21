@@ -21,9 +21,12 @@ elif [[ $(( $max_temp - 200 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
 			echo "No other process; starting new"
         	         sudo color-cycle.py --steps=150 --more --slow --time=15 -c &
 		else
+			sudo killall -9 python3
 			sudo led-off.py --off
         	fi
 	)&
 else
+	sudo killall -9 python3
+	sudo led-off.py --off
 	echo "Not enought"
 fi
