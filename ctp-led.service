@@ -3,34 +3,14 @@ Description=CTP LEDs
 Wants=ctp-led.timer
 
 [Service]
-EnvironmentFile=-/etc/environment.d/90qt-a11y.conf
-EnvironmentFile=-/etc/environment.d/60-test.conf
-EnvironmentFile=-/etc/environment.d/14-cron.conf
-EnvironmentFile=-/etc/environment.d/13-unbound-master.conf
-EnvironmentFile=-/etc/environment.d/09-f2b.conf
-EnvironmentFile=-/etc/environment.d/07-other-vars.conf
-EnvironmentFile=-/etc/environment.d/06-ssh.conf
-EnvironmentFile=-/etc/environment.d/05-master.conf
-EnvironmentFile=-/etc/environment.d/05-ctp-vpn-master.conf
-EnvironmentFile=-/etc/environment.d/03-other-short-dirs.conf
-EnvironmentFile=-/etc/environment.d/02-ctp-vpn-route.conf
-EnvironmentFile=-/etc/environment.d/01-ctp-vpn.conf
-EnvironmentFile=-/etc/environment.d/01-ctp-vpn-route.conf
 EnvironmentFile=-/etc/environment
-EnvironmentFile=-/etc/environment.d/01-PROG.conf
-EnvironmentFile=-/etc/environment.d/02-PROG-ROUTE.conf
-EnvironmentFile=-/etc/environment.d/04-ip-address.conf
-EnvironmentFile=-/etc/environment.d/08-lets.conf
-EnvironmentFile=-/etc/environment.d/12-www.conf
-EnvironmentFile=-/etc/environment.d/10-nginx.conf
-EnvironmentFile=-/etc/environment.d/11-var.conf
-EnvironmentFile=-/etc/environment.d/12-www.conf
-Environment=PID_FILE=/run/qw-ctp.pid
-PIDFile=/run/qw-ctp.pid
+Environment=PID_FILE=/run/led-ctp.pid
+PIDFile=/run/led-ctp.pid
 
-Type=oneshot
+Type=forking
+ExecStartPre=/bin/touch ${PID_FILE}
 ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh
-ExecStartPost=/bin/bash -c "echo ${MAINPID} > ${PID_FILE}"
+#ExecStartPost=/bin/bash -c "echo ${MAINPID} > ${PID_FILE}"
 ExecStop=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off
 
 User=root
