@@ -6,8 +6,7 @@ sudo -E systemctl daemon-reload
 sudo -E systemctl enable --now ctp-led.timer
 sudo -E systemctl enable --now ctp-led.service
 sudo systemctl restart ctp-led.timer ctp-led.service
-sudo systemctl status ctp-led.timer | grep ''
-sudo systemctl status ctp-led.service | grep ''
+sudo systemctl status ctp-led.timer ctp-led.service | grep ''
 
 echo "PROG=$PROG" | sudo -E tee -a /etc/environment
 sudo -E ln -s $PROG/cpu-temp.sh  /usr/local/bin

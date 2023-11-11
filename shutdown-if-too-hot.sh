@@ -6,6 +6,7 @@ other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
 # 401  *C
 max_temp=575
 arg=$1
+process_count=$(pgrep -c -f color-cycle.py)
 function run() {
 	array=($@)
 	args=${array[@]:2:99}
@@ -27,7 +28,7 @@ if [[ $temp -ge $max_temp ]]; then
 	run led-off.py --hot
 #	timeout 15 sudo poweroff
 #	timeout 20 sudo poweroff -f
-elif [[ $(( $max_temp - 100 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
+elif [[ $temp -le $(( $max_temp - 100 )) ]] && [[ $process_count -eq 0 ]]; then
 	echo "No other process; starting new"
 #		sudo color-fade.py 
 #		 sudo color-cycle.py --win95 --white --more -c --time 50
