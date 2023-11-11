@@ -11,3 +11,4 @@ sudo systemctl status ctp-led.timer ctp-led.service | grep ''
 echo "PROG=$PROG" | sudo -E tee -a /etc/environment
 sudo -E ln -s $PROG/cpu-temp.sh  /usr/local/bin
 
+# git stash; git pull -ff; sudo -E ./install.sh
