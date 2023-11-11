@@ -1,5 +1,5 @@
 [Unit]
-Description=CTP LEDs
+Description=CTP LEDs service
 Wants=ctp-led.timer
 
 [Service]

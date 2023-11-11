@@ -4,7 +4,7 @@
 #
 
 [Unit]
-Description=Logs some system statistics to the systemd journal
+Description=CTP LED timer
 Requires=ctp-led.service
 
 [Timer]
