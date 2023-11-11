@@ -2,7 +2,9 @@
 cpu-temp.sh
 temp=`cpu-temp.sh | tr -dc '0-9'`
 other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
-max_temp=550
+# 40.1 *C
+# 401  *C
+max_temp=575
 arg=$1
 function run() {
 	array=($@)
@@ -25,7 +27,7 @@ if [[ $temp -ge $max_temp ]]; then
 	run led-off.py --hot
 #	timeout 15 sudo poweroff
 #	timeout 20 sudo poweroff -f
-elif [[ $(( $max_temp - 200 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
+elif [[ $(( $max_temp - 100 )) -le $temp  ]] && ! pgrep -f color-cycle.py; then
 	echo "No other process; starting new"
 #		sudo color-fade.py 
 #		 sudo color-cycle.py --win95 --white --more -c --time 50
