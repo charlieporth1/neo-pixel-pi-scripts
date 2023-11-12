@@ -35,12 +35,8 @@ elif [[ $temp -le $(( $max_temp - 100 )) ]] && [[ $process_count -eq 0 ]]; then
 		 #sudo color-cycle.py --steps=150 --more --slow --time=15 -c
 #o		sudo color-cycle.py --win95 --white --more -c --time 5 --steps 145 
       	nowhour=$(date +%H | bc -l)
-       	if [[ $nowhour -ge 6 ]]; then
-		echo "No other process; starting new"
-       	        run color-cycle.py --steps=150 --more --slow --time=15 -c
-	else
-		run led-off.py --off
-       	fi
+	echo "No other process; starting new"
+	run color-cycle.py --steps=150 --more --slow --time=15 -c
 
 else
 	run led-off.py --off
