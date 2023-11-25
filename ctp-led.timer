@@ -12,6 +12,7 @@ Unit=ctp-led.service
 OnCalendar=Mon..Fri *-*-* 17..23:00/5:00
 OnCalendar=Sun,Sat *-*-* 06..23:00/5:00
 OnCalendar=Sun,Sat *-*-* 00..02/5:00
+OnCalendar=Thanksgiving
 Persistent=true
 
 [Install]

@@ -1,0 +1,25 @@
+# This timer unit is for testing
+# By David Both
+# Licensed under GPL V2
+#
+
+[Unit]
+Description=CTP LED timer Holiday
+Requires=ctp-led-holiday.service
+
+[Timer]
+Unit=ctp-led-holiday.service
+OnCalendar=Mon..Fri *-*-* 07..23:00/5:00
+OnCalendar=Thanksgiving
+# ny years
+OnCalendar=*-1-1 07..23:00/5:00
+# ny eve
+OnCalendar=*-12-31 07..23:00/5:00
+# x-mass
+OnCalendar=*-12-25 07..23:00/5:00
+# x-mass eve
+OnCalendar=*-12-24 07..23:00/5:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

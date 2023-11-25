@@ -1,0 +1,28 @@
+[Unit]
+Description=CTP LEDs service
+Wants=ctp-led-holiday.timer
+
+[Service]
+EnvironmentFile=-/etc/environment
+Environment=PID_FILE=/run/led-ctp-holiday.pid
+PIDFile=/run/led-ctp-holiday.pid
+
+Type=forking
+RemainAfterExit=yes
+ExecStartPre=/bin/touch ${PID_FILE}
+ExecStart=/bin/bash -c "publicholiday -c US && bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh || exit 0"
+ExecStop=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off
+
+User=root
+Group=root
+
+CPUQuota=15%
+MemoryMax=128M
+Nice=15
+
+StandardOutput=file:/var/log/service.ctp-led-holiday.log
+StandardError=file:/var/log/service.ctp-led-holiday.log
+
+[Install]
+WantedBy=default.target
+Alias=ctp-leds-holiday.service
