@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/opt/vc/bin:$PATH"
 cpu-temp.sh
 temp=`cpu-temp.sh | tr -dc '0-9'`
 other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
