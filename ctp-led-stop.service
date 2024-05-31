@@ -10,7 +10,7 @@ PIDFile=/run/led-ctp-stop.pid
 Type=oneshot
 RemainAfterExit=yes
 ExecStartPre=/bin/touch ${PID_FILE}
-ExecStart=/bin/bash -c "systemctl status ctp-led.service"
+ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-service.sh
 
 User=root
 Group=root

@@ -15,3 +15,15 @@ pip3 install vcgencmd
 or
 sudo pip3 install vcgencmd
 ```
+
+Install scripts & Services
+```
+cd ~/neo-pixel-pi-scripts/
+sudo -E ./install.sh
+```
+
+Update scripts & Services
+```
+cd ~/neo-pixel-pi-scripts/
+git pull; sudo -E ./install.sh
+```
