@@ -22,6 +22,8 @@ if [[ $arg = --off ]]; then
 	sudo killall -9 python3
 	pgrep -f led-off.py | xargs sudo kill -9
 	sudo led-off.py --off
+	bash /home/pi/neo-pixel-pi-scripts/led-off.sh
+	bash /home/pi/neo-pixel-pi-scripts/led-off.sh
 	exit 0
 fi
 if [[ $temp -ge $max_temp ]]; then
