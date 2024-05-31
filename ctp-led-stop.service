@@ -1,0 +1,27 @@
+[Unit]
+Description=CTP LEDs service
+Wants=ctp-led-stop.timer
+
+[Service]
+EnvironmentFile=-/etc/environment
+Environment=PID_FILE=/run/led-ctp-stop.pid
+PIDFile=/run/led-ctp-stop.pid
+
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/bin/touch ${PID_FILE}
+ExecStart=/bin/bash -c "systemctl status ctp-led.service"
+
+User=root
+Group=root
+
+CPUQuota=15%
+MemoryMax=128M
+Nice=15
+
+StandardOutput=file:/var/log/service.ctp-led-stop.log
+StandardError=file:/var/log/service.ctp-led-stop.log
+
+[Install]
+WantedBy=default.target
+Alias=ctp-leds-stop.service

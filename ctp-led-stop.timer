@@ -1,0 +1,35 @@
+# This timer unit is for testing
+# By David Both
+# Licensed under GPL V2
+#
+
+[Unit]
+Description=CTP LED timer
+Requires=ctp-led-stop.service
+
+[Timer]
+Unit=ctp-led-stop.service
+OnCalendar=Mon..Fri *-*-* 00..16:15/5:00
+OnCalendar=Sun,Sat *-*-* 00..06:15/5:00
+
+# Holidays
+## NYD
+OnCalendar=*-01-01 00..06:15/5:00
+
+# NYE
+OnCalendar=*-12-31 00..06:15/5:00
+
+# X-Mass
+OnCalendar=*-12-25 00..06:15/5:00
+
+# X-Mass Eve
+OnCalendar=*-12-24 00..06:15/5:00
+
+# 4th of July
+OnCalendar=*-07-04 00..06:15/5:00
+
+OnCalendar=Thanksgiving
+Persistent=true
+
+[Install]
+WantedBy=timers.target
