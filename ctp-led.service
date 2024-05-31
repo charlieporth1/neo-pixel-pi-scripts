@@ -12,7 +12,7 @@ RemainAfterExit=yes
 ExecStartPre=/bin/touch ${PID_FILE}
 ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh
 #ExecStartPost=/bin/bash -c "echo ${MAINPID} > ${PID_FILE}"
-ExecStop=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off
+ExecStop=/bin/bash -c "bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off; bash /home/pi/neo-pixel-pi-scripts/led-off.sh"
 
 User=root
 Group=root
