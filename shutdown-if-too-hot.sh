@@ -8,6 +8,7 @@ other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
 max_temp=575
 arg=$1
 process_count=$(pgrep -c -f color-cycle.py)
+systemctl enable --noq ctp-led.timer ctp-led-stop.timer
 function run() {
 	array=($@)
 	args=${array[@]:2:99}
