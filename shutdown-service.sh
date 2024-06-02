@@ -1,6 +1,6 @@
 #!/bin/bash
 
-systemctl enable --noq ctp-led.timer ctp-led-stop.timer
+systemctl enable --now ctp-led.timer ctp-led-stop.timer
 
 systemctl stop ctp-led.service
 systemctl stop ctp-led.service
