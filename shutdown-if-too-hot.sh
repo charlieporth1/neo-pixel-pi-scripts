@@ -11,11 +11,50 @@ process_count=$(pgrep -c -f color-cycle.py)
 
 systemctl enable --now ctp-led.timer ctp-led-stop.timer
 
+bin=bc
+if ! command -v $bin; then
+	apt install -y $bin
+fi
+bin=jq
+if ! command -v $bin; then
+	apt install -y $bin
+fi
+
 export nowminute=$(date +%M | bc -l)
+export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
         systemctl restart ctp-led{,-stop}.timer
 fi
 
+export lockFile=/tmp/shutdown-led.lock
+if [[ -f $lockFile ]]; then
+	exit 0
+else
+	day=$(date +%a)
+	hours=$(echo $(seq 8 17))
+	cased_hours=${hours//\ /|}
+	case $nowhour
+	in
+		8|9|10|11|12|13|14|15|16|17 )
+		# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
+			case $day in
+			    Sat|Sun)
+				echo "Hooray!"
+				rm $lockFile
+			    ;;
+			    * )
+				bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+				touch $lockFile
+				exit 0
+			    ;;
+			esac
+		;;
+		* )
+			echo not hours
+			rm $lockFile
+		;;
+	esac
+fi
 
 
 function run() {
@@ -29,11 +68,8 @@ function run() {
 	return 0
 }
 if [[ $arg = --off ]]; then
-	sudo killall -9 python3
-	pgrep -f led-off.py | xargs sudo kill -9
-	sudo led-off.py --off
-	bash /home/pi/neo-pixel-pi-scripts/led-off.sh
-	bash /home/pi/neo-pixel-pi-scripts/led-off.sh
+	bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+	bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
 	exit 0
 fi
 if [[ $temp -ge $max_temp ]]; then
