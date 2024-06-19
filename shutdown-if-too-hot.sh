@@ -11,6 +11,13 @@ process_count=$(pgrep -c -f color-cycle.py)
 
 systemctl enable --now ctp-led.timer ctp-led-stop.timer
 
+export nowminute=$(date +%M | bc -l)
+if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
+        systemctl restart ctp-led{,-stop}.timer
+fi
+
+
+
 function run() {
 	array=($@)
 	args=${array[@]:2:99}
