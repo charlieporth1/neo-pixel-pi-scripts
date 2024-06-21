@@ -27,34 +27,30 @@ if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
 fi
 
 export lockFile=/tmp/shutdown-led.lock
-if [[ -f $lockFile ]]; then
-	exit 0
-else
-	day=$(date +%a)
-	hours=$(echo $(seq 8 17))
-	cased_hours=${hours//\ /|}
-	case $nowhour
-	in
-		8|9|10|11|12|13|14|15|16|17 )
-		# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
-			case $day in
-			    Sat|Sun)
-				echo "Hooray!"
-				rm $lockFile
-			    ;;
-			    * )
-				bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
-				touch $lockFile
-				exit 0
-			    ;;
-			esac
-		;;
-		* )
-			echo not hours
+day=$(date +%a)
+hours=$(echo $(seq 8 17))
+cased_hours=${hours//\ /|}
+case $nowhour
+in
+	8|9|10|11|12|13|14|15|16|17 )
+	# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
+		case $day in
+		    Sat|Sun)
+			echo "Hooray!"
 			rm $lockFile
-		;;
-	esac
-fi
+		    ;;
+		    * )
+			bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+			touch $lockFile
+			exit 0
+		    ;;
+		esac
+	;;
+	* )
+		echo not hours
+		rm $lockFile
+	;;
+esac
 
 
 function run() {
