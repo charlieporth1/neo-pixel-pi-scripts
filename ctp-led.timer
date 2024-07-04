@@ -34,7 +34,7 @@ OnCalendar=*-12-24 00..02:00/5:00
 OnCalendar=*-07-04 06..23:00/5:00
 OnCalendar=*-07-04 00..02:00/5:00
 
-OnCalendar=Thanksgiving
+#OnCalendar=Thanksgiving
 Persistent=true
 
 [Install]

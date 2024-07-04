@@ -28,22 +28,74 @@ fi
 
 export lockFile=/tmp/shutdown-led.lock
 day=$(date +%a)
+dom=$(date +%d)
+mo=$(date +%m)
 hours=$(echo $(seq 8 17))
 cased_hours=${hours//\ /|}
+
 case $nowhour
 in
 	8|9|10|11|12|13|14|15|16|17 )
 	# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
-		case $day in
-		    Sat|Sun)
-			echo "Hooray!"
-			rm $lockFile
-		    ;;
-		    * )
-			bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
-			touch $lockFile
-			exit 0
-		    ;;
+		case $dom
+		in
+			01 )
+				case $mo
+				in
+					01 )
+						echo "Hooray!"
+						rm $lockFile
+					;;
+					* )
+						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						touch $lockFile
+						exit 0
+					;;
+				esac
+			;;
+			04 )
+				case $mo
+				in
+					07 )
+						echo "Hooray!"
+						rm $lockFile
+					;;
+					* )
+						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						touch $lockFile
+						exit 0
+					;;
+				esac
+			;;
+			23 | 24 | 31 )
+				case $mo
+				in
+					12 )
+						echo "Hooray!"
+						rm $lockFile
+					;;
+					* )
+						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						touch $lockFile
+						exit 0
+					;;
+				esac
+			;;
+
+
+			* )
+				case $day in
+				    Sat | Sun )
+					echo "Hooray!"
+					rm $lockFile
+				    ;;
+				    * )
+					bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+					touch $lockFile
+					exit 0
+				    ;;
+				esac
+			;;
 		esac
 	;;
 	* )
