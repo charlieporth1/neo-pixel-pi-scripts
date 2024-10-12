@@ -32,7 +32,7 @@ dom=$(date +%d)
 mo=$(date +%m)
 hours=$(echo $(seq 8 17))
 cased_hours=${hours//\ /|}
-
+src_dir=/home/pi/neo-pixel-pi-scripts
 case $nowhour
 in
 	8|9|10|11|12|13|14|15|16|17 )
@@ -47,7 +47,7 @@ in
 						rm $lockFile
 					;;
 					* )
-						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						bash $src_dir/shutdown-led.sh
 						touch $lockFile
 						exit 0
 					;;
@@ -61,7 +61,7 @@ in
 						rm $lockFile
 					;;
 					* )
-						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						bash $src_dir/shutdown-led.sh
 						touch $lockFile
 						exit 0
 					;;
@@ -75,7 +75,7 @@ in
 						rm $lockFile
 					;;
 					* )
-						bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+						bash $src_dir/shutdown-led.sh
 						touch $lockFile
 						exit 0
 					;;
@@ -90,7 +90,7 @@ in
 					rm $lockFile
 				    ;;
 				    * )
-					bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+					bash $src_dir/shutdown-led.sh
 					touch $lockFile
 					exit 0
 				    ;;
@@ -116,8 +116,8 @@ function run() {
 	return 0
 }
 if [[ $arg = --off ]]; then
-	bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
-	bash /home/pi/neo-pixel-pi-scripts/shutdown-led.sh
+	bash $src_dir/shutdown-led.sh
+	bash $src_dir/shutdown-led.sh
 	exit 0
 fi
 if [[ $temp -ge $max_temp ]]; then
