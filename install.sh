@@ -1,7 +1,9 @@
 #!/bin/bash
 # vars
 dir=$(dirname $0)
-export PROG=/home/pi/Programs
+
+export HOME=/home/pi
+export PROG=$HOME/Programs
 
 # misc setup
 find -L $HOME -type l -exec rm -rf {} \; -not -path "/mnt/*"
@@ -25,7 +27,8 @@ chmod -x *.service
 
 # install
 sudo -E ln -s $HOME/neo-pixel-pi-scripts $PROG
-sudo -E ln -s $dir $PROG
+#sudo -E ln -s $dir $PROG
+
 sudo -E cp -vrf ./ctp-led.{timer,service} /etc/systemd/system
 sudo -E cp -vrf ./ctp-led*.{timer,service} /etc/systemd/system
 
