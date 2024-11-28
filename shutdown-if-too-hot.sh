@@ -25,31 +25,58 @@ export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
         systemctl restart ctp-led{,-stop}.timer
 fi
-
-export lockFile=/tmp/shutdown-led.lock
+function fail-action() {
+	if [[ $is_day_hit -eq 0 ]]
+		bash $src_dir/shutdown-led.sh
+		touch $lockFile
+		exit 0
+	fi
+}
+function accept-action() {
+		declare -gx is_day_hit=1
+		echo "Hooray!"
+		rm $lockFile
+}
+computer_date=$(date +%F)
 day=$(date +%a)
 dom=$(date +%d)
 mo=$(date +%m)
+current_year=$(date +%Y)
 hours=$(echo $(seq 8 17))
 cased_hours=${hours//\ /|}
+
 src_dir=/home/pi/neo-pixel-pi-scripts
+is_day_hit=0
+export lockFile=/tmp/shutdown-led.lock
+
+# Calculate the date of the fourth Thursday of November
+
 case $nowhour
 in
 	8|9|10|11|12|13|14|15|16|17 )
-	# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
+		# dynamic days
+		thanksgiving_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4)
+		black_fri_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 4)
+		black_fri_date_1=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 5)
+		if [[ $thanksgiving_date -eq $computer_date ]]; then
+			accept-action
+		elif [[ $black_fri_date -eq $computer_date ]]; then
+			accept-action
+		elif [[ $black_fri_date_1 -eq $computer_date ]]; then
+			accept-action
+		fi
+		# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
+		# static days
 		case $dom
 		in
 			01 )
 				case $mo
 				in
 					01 )
-						echo "Hooray!"
-						rm $lockFile
+						accept-action
 					;;
 					* )
-						bash $src_dir/shutdown-led.sh
-						touch $lockFile
-						exit 0
+						fail-action
 					;;
 				esac
 			;;
@@ -57,13 +84,10 @@ in
 				case $mo
 				in
 					07 )
-						echo "Hooray!"
-						rm $lockFile
+						accept-action
 					;;
 					* )
-						bash $src_dir/shutdown-led.sh
-						touch $lockFile
-						exit 0
+						fail-action
 					;;
 				esac
 			;;
@@ -71,13 +95,10 @@ in
 				case $mo
 				in
 					12 )
-						echo "Hooray!"
-						rm $lockFile
+						accept-action
 					;;
 					* )
-						bash $src_dir/shutdown-led.sh
-						touch $lockFile
-						exit 0
+						fail-action
 					;;
 				esac
 			;;
@@ -86,21 +107,17 @@ in
 			* )
 				case $day in
 				    Sat | Sun )
-					echo "Hooray!"
-					rm $lockFile
+					accept-action
 				    ;;
 				    * )
-					bash $src_dir/shutdown-led.sh
-					touch $lockFile
-					exit 0
+					fail-action
 				    ;;
 				esac
 			;;
 		esac
 	;;
 	* )
-		echo not hours
-		rm $lockFile
+		accept-action
 	;;
 esac
 
