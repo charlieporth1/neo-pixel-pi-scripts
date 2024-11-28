@@ -13,6 +13,7 @@ cd $dir
 # apt & dpkg
 dpkg --configure -a
 apt install -y python3 python3-pip python3-full
+apt install -y bc jq
 
 # pip
 # https://www.pysysops.com/2018/07/23/Running-Tasks-Based-on-Public-Holidays.html
