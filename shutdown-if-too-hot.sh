@@ -25,18 +25,22 @@ export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
         systemctl restart ctp-led{,-stop}.timer
 fi
+
 function fail-action() {
 	if [[ $is_day_hit -eq 0 ]]
+	then
 		bash $src_dir/shutdown-led.sh
 		touch $lockFile
 		exit 0
 	fi
 }
+
 function accept-action() {
 		declare -gx is_day_hit=1
 		echo "Hooray!"
 		rm $lockFile
 }
+
 computer_date=$(date +%F)
 day=$(date +%a)
 dom=$(date +%d)
