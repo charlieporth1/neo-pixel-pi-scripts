@@ -33,7 +33,8 @@ function accept-action() {
 }
 
 function fail-action() {
-	if [[ $is_day_hit -eq 0 ]]; then
+	if [[ $is_day_hit -eq 0 ]]
+	then
 		bash $src_dir/shutdown-led.sh
 		touch $lockFile
 		exit 0
