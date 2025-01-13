@@ -25,4 +25,5 @@
   *   *   *   *   *   systemctl start cron  
   *   *   *   *   *   tailscale up
   *   *   *   *   *   systemctl start ctp-led.timer ctp-led-stop.timer
+  0   *   *   *   *   systemctl restart ctp-led.timer ctp-led-stop.timer
   *   *   *   *   *   bash /home/pi/Programs/replace-all-8-4-with-8-8.sh
