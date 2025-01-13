@@ -22,5 +22,6 @@
 # 
 # m h  dom mon dow   command
   *   *   *   *   *   systemctl start tailscaled
+  *   *   *   *   *   systemctl start cron
   *   *   *   *   *   tailscale up
   *   *   *   *   *   systemctl start ctp-led.timer ctp-led-stop.timer

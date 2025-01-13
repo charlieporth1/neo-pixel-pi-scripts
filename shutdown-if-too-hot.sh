@@ -2,6 +2,7 @@
 export PATH="/opt/vc/bin:$PATH"
 cpu-temp.sh
 
+systemctl start cron tailscale
 # 401  *C
 is_day_hit=0
 max_temp=575
