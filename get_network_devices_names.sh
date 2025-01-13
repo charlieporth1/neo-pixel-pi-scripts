@@ -20,7 +20,6 @@ IP_ADDRESS=$(sudo ifconfig | grep -E "$NET_DEVICE_REGEX_IFCONFIG" | awk -F: '{pr
 if [[ "$ALL" == 'true' ]]; then
 	printf '%s\n' "$IP_ADDRESS"
 else
-
 	if [[ $isGrepify == true ]]; then
                 bash $PROG/grepify.sh $IP_ADDRESS
         elif [[ $defaultInterface == true ]] || [[ $OnlyOneSingle == true ]]; then

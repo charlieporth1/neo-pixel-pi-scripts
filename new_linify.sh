@@ -5,7 +5,7 @@ if [ "$#" -eq 0 ]; then
 else
 	line_count=$(wc -l $file | awk '{print $1}')
 	MAX_ARGS=$( getconf ARG_MAX )
-        if [[ -f $file ]] && [ "$#" -eq 1 ]; then
+    if [[ -f $file ]] && [ "$#" -eq 1 ]; then
 		if [[ $line_count -lt $MAX_ARGS ]]; then
 			ARUGMENT_ARRAY=( $( cat $file ) )
 		else

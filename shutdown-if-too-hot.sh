@@ -1,13 +1,16 @@
 #!/bin/bash
 export PATH="/opt/vc/bin:$PATH"
 cpu-temp.sh
-temp=`cpu-temp.sh | tr -dc '0-9'`
-other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
-# 40.1 *C
+
 # 401  *C
+is_day_hit=0
 max_temp=575
 arg=$1
+
+temp=`cpu-temp.sh | tr -dc '0-9'`
 process_count=$(pgrep -c -f color-cycle.py)
+other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
+# 40.1 *C
 
 systemctl enable --now ctp-led.timer ctp-led-stop.timer
 
@@ -15,6 +18,7 @@ bin=bc
 if ! command -v $bin; then
 	apt install -y $bin
 fi
+
 bin=jq
 if ! command -v $bin; then
 	apt install -y $bin
@@ -23,21 +27,27 @@ fi
 export nowminute=$(date +%M | bc -l)
 export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
-        systemctl restart ctp-led{,-stop}.timer
+    systemctl restart ctp-led{,-stop}.timer
 fi
 
 function accept-action() {
-	declare -gx is_day_hit=1
-	echo "Hooray!"
-	rm $lockFile
+	if ! [[ -f $shutFile ]]
+	then
+		declare -gx is_day_hit=1
+		echo "Hooray!"
+		rm $lockFile
+		declare -gx ec=0
+	fi
 }
 
 function fail-action() {
-	if [[ $is_day_hit -eq 0 ]]
+	if [[ $is_day_hit -eq 0 ]] && \
+	 ! [[ -f $overFile ]]
 	then
 		bash $src_dir/shutdown-led.sh
 		touch $lockFile
-		exit 0
+		declare -gx ec=0
+		exit $ec
 	fi
 }
 
@@ -50,8 +60,10 @@ hours=$(echo $(seq 8 17))
 cased_hours=${hours//\ /|}
 
 src_dir=/home/pi/neo-pixel-pi-scripts
-is_day_hit=0
-export lockFile=/tmp/shutdown-led.lock
+lockFile=/tmp/shutdown-led.lock
+shutFile=/tmp/shutdown-led.shutdown
+overFile=/tmp/shutdown-led.override
+
 
 # Calculate the date of the fourth Thursday of November
 
@@ -68,6 +80,8 @@ in
 			accept-action
 		elif [[ $black_fri_date_1 -eq $computer_date ]]; then
 			accept-action
+		else 
+			is_day_hit=0
 		fi
 		# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
 		# static days
@@ -81,6 +95,7 @@ in
 					;;
 					* )
 						fail-action
+						exit $ec
 					;;
 				esac
 			;;
@@ -92,17 +107,20 @@ in
 					;;
 					* )
 						fail-action
+						exit $ec
 					;;
 				esac
 			;;
-			23 | 24 | 31 )
+			23 | 24 | 25 | 31 )
 				case $mo
 				in
 					12 )
 						accept-action
+						declare -gx special_day=1225
 					;;
 					* )
 						fail-action
+						exit $ec
 					;;
 				esac
 			;;
@@ -111,10 +129,11 @@ in
 			* )
 				case $day in
 				    Sat | Sun )
-					accept-action
+						accept-action
 				    ;;
 				    * )
-					fail-action
+						fail-action
+						exit $ec
 				    ;;
 				esac
 			;;
@@ -144,17 +163,26 @@ fi
 if [[ $temp -ge $max_temp ]]; then
 	echo "Shutting down computer too hot"
 	run led-off.py --hot
-#	timeout 15 sudo poweroff
-#	timeout 20 sudo poweroff -f
+	# timeout 15 sudo poweroff
+	# timeout 20 sudo poweroff -f
 elif [[ $temp -le $(( $max_temp - 100 )) ]] && [[ $process_count -eq 0 ]]; then
 	echo "No other process; starting new"
-#		sudo color-fade.py
-#		 sudo color-cycle.py --win95 --white --more -c --time 50
-		 #sudo color-cycle.py --steps=150 --more --slow --time=15 -c
-#o		sudo color-cycle.py --win95 --white --more -c --time 5 --steps 145
-      	nowhour=$(date +%H | bc -l)
+	# sudo color-fade.py
+	# sudo color-cycle.py --win95 --white --more -c --time 50
+	# sudo color-cycle.py --steps=150 --more --slow --time=15 -c
+	# sudo color-cycle.py --win95 --white --more -c --time 5 --steps 145
+    nowhour=$(date +%H | bc -l)
 	echo "No other process; starting new"
-	run color-cycle.py --steps=150 --more --slow --time=15 -c
+	case $special_day
+	in
+		1225 )
+			run chrismiss.py
+		;;
+		* )
+			run color-cycle.py --steps=150 --more --slow --time=15 -c
+		;;
+	esac
+
 
 else
 	run led-off.py --off

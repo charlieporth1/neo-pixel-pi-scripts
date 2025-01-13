@@ -80,7 +80,7 @@ function tag_test() {
 	local tag="$2"
 	local port_and_or_ip="$1"
 	local port=$(echo $port_and_or_ip | cut -f 2- -d ':')
-        local port_status=`ss -alunt "sport = :$port" | grep -o "$port_and_or_ip" | sort -u`
+    local port_status=`ss -alunt "sport = :$port" | grep -o "$port_and_or_ip" | sort -u`
 	if [[ -n "$port_status" ]]; then
 		add_tag "$tag"
 	fi

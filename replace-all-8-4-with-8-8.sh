@@ -5,6 +5,9 @@ replaced_amount=$(( 8 * 8 ))
 replace_str="LED_COUNT      = $replace_amount"
 replace_str_1="LED_COUNT      =  $replace_amount"
 replace_str_2="LED_COUNT = $replace_amount"
+replace_str_3="LED_COUNT =  $replace_amount"
+replace_str_4="LED_COUNT  = $replace_amount"
+replace_str_5="LED_COUNT  =  $replace_amount"
 
 replaced_str="LED_COUNT      = $replaced_amount"
 
@@ -17,4 +20,7 @@ do
 	sed -i "s/$replace_str/$replaced_str/g" $file
 	sed -i "s/$replace_str_1/$replaced_str/g" $file
 	sed -i "s/$replace_str_2/$replaced_str/g" $file
+	sed -i "s/$replace_str_3/$replaced_str/g" $file
+	sed -i "s/$replace_str_4/$replaced_str/g" $file
+	sed -i "s/$replace_str_5/$replaced_str/g" $file
 done

@@ -5,7 +5,7 @@ systemctl enable --now ctp-led.timer ctp-led-stop.timer
 export nowminute=$(date +%M | bc -l)
 export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
-        systemctl restart ctp-led{,-stop}.timer
+    systemctl restart ctp-led{,-stop}.timer
 fi
 
 export lockFile=/tmp/shutdown-led.lock
