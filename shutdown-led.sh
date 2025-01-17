@@ -1,4 +1,8 @@
 #!/bin/bash
+systemctl start cron tailscaled
+systemctl start ctp-led.timer ctp-led-stop.timer
+systemctl enable --now ctp-led.timer ctp-led-stop.timer
+
 p=/home/pi/neo-pixel-pi-scripts
 bash $p/led-off.sh
 bash $p/led-off.sh

@@ -2,7 +2,9 @@
 export PATH="/opt/vc/bin:$PATH"
 cpu-temp.sh
 
-systemctl start cron tailscale
+systemctl start cron tailscaled
+systemctl start ctp-led.timer ctp-led-stop.timer
+systemctl enable --now ctp-led.timer ctp-led-stop.timer
 # 401  *C
 is_day_hit=0
 max_temp=575
