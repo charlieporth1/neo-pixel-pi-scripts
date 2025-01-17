@@ -174,7 +174,7 @@ elif [[ $temp -le $(( $max_temp - 100 )) ]] && [[ $process_count -eq 0 ]]; then
 	# sudo color-cycle.py --win95 --white --more -c --time 50
 	# sudo color-cycle.py --steps=150 --more --slow --time=15 -c
 	# sudo color-cycle.py --win95 --white --more -c --time 5 --steps 145
-    nowhour=$(date +%H | bc -l)
+   	nowhour=$(date +%H | bc -l)
 	echo "No other process; starting new"
 	case $special_day
 	in
