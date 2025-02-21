@@ -2,21 +2,42 @@
 export PATH="/opt/vc/bin:$PATH"
 cpu-temp.sh
 
-systemctl start cron tailscaled
-systemctl start ctp-led.timer ctp-led-stop.timer
-systemctl enable --now ctp-led.timer ctp-led-stop.timer
-# 401  *C
+# args
+arg=$1
+
+# static vars
+src_dir=/home/pi/neo-pixel-pi-scripts
+lockFile=/tmp/shutdown-led.lock
+shutFile=/tmp/shutdown-led.shutdown
+overFile=/tmp/shutdown-led.override
 is_day_hit=0
 max_temp=575
-arg=$1
+
+# dynmaic vars
+computer_date=$(date +%F)
+day=$(date +%a)
+dom=$(date +%d)
+mo=$(date +%m)
+current_year=$(date +%Y)
+hours=$(echo $(seq 8 17))
+cased_hours=${hours//\ /|}
+export nowminute=$(date +%M | bc -l)
+export nowhour=$(date +%H | bc -l)
 
 temp=`cpu-temp.sh | tr -dc '0-9'`
 process_count=$(pgrep -c -f color-cycle.py)
 other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
-# 40.1 *C
 
+# 40.1 *C
+# 401  *C
+
+# systemd
+systemctl start cron tailscaled
+systemctl start ctp-led.timer ctp-led-stop.timer
+systemctl enable --now tailscaled cron
 systemctl enable --now ctp-led.timer ctp-led-stop.timer
 
+# install bins
 bin=bc
 if ! command -v $bin; then
 	apt install -y $bin
@@ -27,12 +48,11 @@ if ! command -v $bin; then
 	apt install -y $bin
 fi
 
-export nowminute=$(date +%M | bc -l)
-export nowhour=$(date +%H | bc -l)
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
     systemctl restart ctp-led{,-stop}.timer
 fi
 
+# accept / run
 function accept-action() {
 	if ! [[ -f $shutFile ]]
 	then
@@ -43,36 +63,24 @@ function accept-action() {
 	fi
 }
 
+# fail / shutdown
 function fail-action() {
 	if [[ $is_day_hit -eq 0 ]] && \
 	 ! [[ -f $overFile ]]
 	then
 		bash $src_dir/shutdown-led.sh
-		touch $lockFile
+		touch $shutFile
 		declare -gx ec=0
 		exit $ec
 	fi
 }
-
-computer_date=$(date +%F)
-day=$(date +%a)
-dom=$(date +%d)
-mo=$(date +%m)
-current_year=$(date +%Y)
-hours=$(echo $(seq 8 17))
-cased_hours=${hours//\ /|}
-
-src_dir=/home/pi/neo-pixel-pi-scripts
-lockFile=/tmp/shutdown-led.lock
-shutFile=/tmp/shutdown-led.shutdown
-overFile=/tmp/shutdown-led.override
 
 
 # Calculate the date of the fourth Thursday of November
 
 case $nowhour
 in
-	8|9|10|11|12|13|14|15|16|17 )
+	7|8|9|10|11|12|13|14|15|16|17 )
 		# dynamic days
 		thanksgiving_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4)
 		black_fri_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 4)
@@ -83,7 +91,7 @@ in
 			accept-action
 		elif [[ $black_fri_date_1 -eq $computer_date ]]; then
 			accept-action
-		else 
+		else
 			is_day_hit=0
 		fi
 		# https://stackoverflow.com/questions/3490032/how-to-check-if-today-is-a-weekend-in-bash
@@ -142,6 +150,19 @@ in
 			;;
 		esac
 	;;
+	0|1|2|3|4|5|6 )
+		case $day in
+			Fri | Sat | Sun )
+				# accept-action
+				fail-action
+				exit $ec
+			;;
+			* )
+				fail-action
+				exit $ec
+		 	;;
+		esac
+	;;
 	* )
 		accept-action
 	;;
@@ -152,12 +173,15 @@ function run() {
 	array=($@)
 	args=${array[@]:2:99}
 	bin=$1
-	sudo killall -9 python3
-	pgrep -f $bin | xargs sudo kill -9
-	$bin $args &
+	#sudo killall -9 python3
+	#pgrep -f $bin | xargs sudo kill -9
+	if ! [[ $lockFile ]]; then
+		$bin $args &
+	fi
 	pgrep -f $bin > /run/led-ctp.pid
 	return 0
 }
+
 if [[ $arg = --off ]]; then
 	bash $src_dir/shutdown-led.sh
 	bash $src_dir/shutdown-led.sh
