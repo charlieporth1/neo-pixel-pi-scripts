@@ -9,32 +9,8 @@ Requires=ctp-led.service
 
 [Timer]
 Unit=ctp-led.service
-OnCalendar=Mon..Fri *-*-* 17..23:00/5:00
-OnCalendar=Sun,Sat *-*-* 07..23:00/5:00
-OnCalendar=Sun,Sat *-*-* 00..02/5:00
+OnCalendar=Mon..Fri *-*-* *:*:00/5:00
 
-# Holidays
-## NYD
-OnCalendar=*-01-01 06..23:00/5:00
-OnCalendar=*-01-01 00..02:00/5:00
-
-# NYE
-OnCalendar=*-12-31 06..23:00/5:00
-OnCalendar=*-12-31 00..02:00/5:00
-
-# X-Mass
-OnCalendar=*-12-25 06..23:00/5:00
-OnCalendar=*-12-25 00..02:00/5:00
-
-# X-Mass Eve
-OnCalendar=*-12-24 06..23:00/5:00
-OnCalendar=*-12-24 00..02:00/5:00
-
-# 4th of July
-OnCalendar=*-07-04 06..23:00/5:00
-OnCalendar=*-07-04 00..02:00/5:00
-
-#OnCalendar=Thanksgiving
 Persistent=true
 
 [Install]

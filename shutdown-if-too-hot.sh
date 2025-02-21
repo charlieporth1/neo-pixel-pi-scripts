@@ -50,6 +50,7 @@ fi
 
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
     systemctl restart ctp-led{,-stop}.timer
+    systemctl restart ctp-led{,-stop}.service
 fi
 
 # accept / run
