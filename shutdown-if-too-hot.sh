@@ -176,7 +176,7 @@ function run() {
 	bin=$1
 	#sudo killall -9 python3
 	#pgrep -f $bin | xargs sudo kill -9
-	if ! [[ $lockFile ]]; then
+	if ! [[ -f $lockFile ]]; then
 		$bin $args &
 	fi
 	pgrep -f $bin > /run/led-ctp.pid
