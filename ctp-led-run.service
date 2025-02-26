@@ -1,18 +1,17 @@
 [Unit]
 Description=CTP LEDs service
-Wants=ctp-led.timer
 
 [Service]
 EnvironmentFile=-/etc/environment
 Environment=PID_FILE=/run/led-ctp.pid
 PIDFile=/run/led-ctp.pid
 
-Type=oneshot
+Type=forking
 RemainAfterExit=yes
 ExecStartPre=/bin/touch ${PID_FILE}
-ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/ctp-led.sh --start
+ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh
 #ExecStartPost=/bin/bash -c "echo ${MAINPID} > ${PID_FILE}"
-ExecStop=/bin/bash -c "bash /home/pi/neo-pixel-pi-scripts/ctp-led.sh --stop"
+ExecStop=/bin/bash -c "bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off; bash /home/pi/neo-pixel-pi-scripts/led-off.sh"
 
 User=root
 Group=root
@@ -21,9 +20,9 @@ CPUQuota=15%
 MemoryMax=128M
 Nice=15
 
-StandardOutput=file:/var/log/service.ctp-led.log
-StandardError=file:/var/log/service.ctp-led.log
+StandardOutput=file:/var/log/service.ctp-led-run.log
+StandardError=file:/var/log/service.ctp-led-run.log
 
 [Install]
 WantedBy=default.target
-Alias=ctp-leds.service
+Alias=ctp-leds-run.service

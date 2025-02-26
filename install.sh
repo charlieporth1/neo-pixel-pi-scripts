@@ -32,6 +32,15 @@ sudo -E ln -s $HOME/neo-pixel-pi-scripts $PROG
 
 sudo -E cp -vrf ./ctp-led.{timer,service} /etc/systemd/system
 sudo -E cp -vrf ./ctp-led*.{timer,service} /etc/systemd/system
+case $HOSTNAME
+in
+	raspberrypi3bplus-aiy )
+		sudo -E cp -vrf ./config/cron/8x8/ /var/spool/cron/crontabs
+	;;
+	* )
+		sudo -E cp -vrf ./config/cron/8x4/ /var/spool/cron/crontabs
+	;;
+esac
 
 # systemd
 sudo -E systemctl daemon-reload
