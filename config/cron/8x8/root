@@ -26,4 +26,5 @@
   *   *   *   *   *   tailscale up
   *   *   *   *   *   systemctl start ctp-led.timer ctp-led-stop.timer
   0   *   *   *   *   systemctl restart ctp-led.timer ctp-led-stop.timer
+*/15  *   *   *   *   systemctl restart ctp-led.service ctp-led-stop.service
   *   *   *   *   *   bash /home/pi/Programs/replace-all-8-4-with-8-8.sh
