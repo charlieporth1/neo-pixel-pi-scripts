@@ -139,8 +139,9 @@ in
 
 
 			* )
+				# Mon is WFH day
 				case $day in
-				    Sat | Sun )
+				    Sat | Sun | Mon )
 						accept-action
 				    ;;
 				    * )
