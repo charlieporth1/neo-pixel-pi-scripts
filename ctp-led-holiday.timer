@@ -19,7 +19,7 @@ OnCalendar=*-12-31 07..23:00/5:00
 OnCalendar=*-12-25 07..23:00/5:00
 # x-mass eve
 OnCalendar=*-12-24 07..23:00/5:00
-Persistent=true
+#Persistent=true
 
 [Install]
 WantedBy=timers.target
