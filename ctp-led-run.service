@@ -7,7 +7,7 @@ Environment=PID_FILE=/run/led-ctp.pid
 PIDFile=/run/led-ctp.pid
 
 Type=forking
-RemainAfterExit=yes
+RemainAfterExit=no
 ExecStartPre=/bin/touch ${PID_FILE}
 ExecStart=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh
 #ExecStartPost=/bin/bash -c "echo ${MAINPID} > ${PID_FILE}"

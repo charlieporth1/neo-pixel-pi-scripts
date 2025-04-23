@@ -8,7 +8,7 @@ Environment=PID_FILE=/run/led-ctp-holiday.pid
 PIDFile=/run/led-ctp-holiday.pid
 
 Type=forking
-RemainAfterExit=yes
+RemainAfterExit=no
 ExecStartPre=/bin/touch ${PID_FILE}
 ExecStart=/bin/bash -c "publicholiday -c US && bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh || exit 0"
 ExecStop=/bin/bash /home/pi/neo-pixel-pi-scripts/shutdown-if-too-hot.sh --off
