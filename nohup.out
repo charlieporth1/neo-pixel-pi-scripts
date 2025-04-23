@@ -49,3 +49,6 @@ rm: /tmp/generate_config.sh.lock: No such file or directory
 cp master
 rm: /tmp/generate_config.sh.lock: No such file or directory
 rm: /tmp/generate_config.sh.lock: No such file or directory
+rm: /tmp/generate_config.sh.lock: No such file or directory
+rm: /tmp/generate_config.sh.lock: No such file or directory
+rm: /tmp/generate_config.sh.lock: No such file or directory
