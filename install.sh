@@ -46,8 +46,9 @@ esac
 sudo -E systemctl daemon-reload
 sudo -E systemctl enable --now ctp-led.timer
 sudo -E systemctl enable --now ctp-led.service
-sudo -E systemctl enable --now ctp-led-stop.timer
 sudo -E systemctl enable --now ctp-led-stop.service
+sudo -E systemctl enable --now ctp-led-stop.timer
+sudo -E systemctl enable --now ctp-led-run.timer
 sudo -E systemctl enable --now ctp-led*
 
 # systemd ext

@@ -1,0 +1,17 @@
+# This timer unit is for testing
+# By David Both
+# Licensed under GPL V2
+#
+
+[Unit]
+Description=CTP LED Run timer
+Requires=ctp-led-run.service
+
+[Timer]
+Unit=ctp-led-run.service
+OnCalendar=*-*-* *:00/5:00
+
+#Persistent=true
+
+[Install]
+WantedBy=timers.target
