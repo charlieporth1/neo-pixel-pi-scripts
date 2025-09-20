@@ -185,34 +185,37 @@ function run() {
 }
 
 if [[ $arg = --off ]]; then
+	echo "Off"
 	bash $src_dir/shutdown-led.sh
 	bash $src_dir/shutdown-led.sh
 	exit 0
 fi
 if [[ $temp -ge $max_temp ]]; then
 	echo "Shutting down computer too hot"
+	echo "Hot"
 	run led-off.py --hot
+	run led-off.py --off
 	# timeout 15 sudo poweroff
 	# timeout 20 sudo poweroff -f
-elif [[ $temp -le $(( $max_temp - 100 )) ]] && [[ $process_count -eq 0 ]]; then
+elif [[ $temp -le $max_temp ]] && [[ $process_count -eq 0 ]]; then
+	echo "Run"
 	echo "No other process; starting new"
 	# sudo color-fade.py
 	# sudo color-cycle.py --win95 --white --more -c --time 50
 	# sudo color-cycle.py --steps=150 --more --slow --time=15 -c
 	# sudo color-cycle.py --win95 --white --more -c --time 5 --steps 145
-   	nowhour=$(date +%H | bc -l)
 	echo "No other process; starting new"
 	case $special_day
 	in
 		1225 )
+			echo "X-Mass"
 			run chrismiss.py
 		;;
 		* )
+			echo "Color Cycle"
 			run color-cycle.py --steps=150 --more --slow --time=15 -c
 		;;
 	esac
-
-
 else
 	run led-off.py --off
 	echo "Not enought"
