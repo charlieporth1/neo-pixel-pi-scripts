@@ -33,9 +33,9 @@ other_processes=`ps -aux | grep '.py' | grep -v "grep" | grep -o '.py'`
 
 # systemd
 systemctl start cron tailscaled
-systemctl start ctp-led.timer ctp-led-stop.timer
-systemctl enable --now tailscaled cron
-systemctl enable --now ctp-led.timer ctp-led-stop.timer
+systemctl start ctp-led.timer ctp-led-stop.timer ctp-led-run.timer
+systemctl enable tailscaled cron
+systemctl enable ctp-led.timer ctp-led-stop.timer ctp-led-run.timer
 
 # install bins
 bin=bc
@@ -49,8 +49,8 @@ if ! command -v $bin; then
 fi
 
 if [[ $(( $nowminute  % 15 )) -eq 0 ]]; then
-    systemctl restart ctp-led{,-stop}.timer
-    systemctl restart ctp-led{,-stop}.service
+    systemctl restart ctp-led{,-stop,-run}.timer
+    systemctl restart ctp-led{,-stop,-run}.service
 fi
 
 # accept / run
