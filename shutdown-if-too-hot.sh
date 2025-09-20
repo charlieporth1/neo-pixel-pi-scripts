@@ -83,14 +83,14 @@ case $nowhour
 in
 	7|8|9|10|11|12|13|14|15|16|17 )
 		# dynamic days
-		thanksgiving_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4)
-		black_fri_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 4)
-		black_fri_date_1=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 1)
-		if [[ $thanksgiving_date -eq $computer_date ]]; then
+		thanksgiving_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4 2>/dev/null)
+		black_fri_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 4 2>/dev/null)
+		black_fri_date_1=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4 2>/dev/null)
+		if [[ "$thanksgiving_date" = "$computer_date" ]]; then
 			accept-action
-		elif [[ $black_fri_date -eq $computer_date ]]; then
+		elif [[ "$black_fri_date" = "$computer_date" ]]; then
 			accept-action
-		elif [[ $black_fri_date_1 -eq $computer_date ]]; then
+		elif [[ "$black_fri_date_1" = "$computer_date" ]]; then
 			accept-action
 		else
 			is_day_hit=0
