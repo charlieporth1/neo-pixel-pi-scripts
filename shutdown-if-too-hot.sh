@@ -85,7 +85,7 @@ in
 		# dynamic days
 		thanksgiving_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 4)
 		black_fri_date=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 4)
-		black_fri_date_1=$(bash $src_dir/x-day-of-the-week-of-month.sh November 5 5)
+		black_fri_date_1=$(bash $src_dir/x-day-of-the-week-of-month.sh November 4 1)
 		if [[ $thanksgiving_date -eq $computer_date ]]; then
 			accept-action
 		elif [[ $black_fri_date -eq $computer_date ]]; then
